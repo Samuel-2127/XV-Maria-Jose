@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Invitación XV Años</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html, body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+}
+
+/* Pantallas */
+#bienvenida,
+#transicion,
+#invitacion{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
+/* Imagen inicial */
+#bienvenida{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+#bienvenida img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* Videos */
+#transicion,
+#invitacion{
+    display:none;
+}
+
+video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+</style>
+</head>
+<body>
+
+<!-- Imagen de bienvenida -->
+<div id="bienvenida">
+    <img src="bienvenida.png" alt="Bienvenida">
+</div>
+
+<!-- Video de transición -->
+<div id="transicion">
+    <video
+        id="videoTransicion"
+        playsinline
+        webkit-playsinline
+        preload="auto">
+        <source src="transicion.mp4" type="video/mp4">
+        Tu navegador no soporta video.
+    </video>
+</div>
+
+<!-- Video principal -->
+<div id="invitacion">
+    <video
+        id="videoInvitacion"
+        playsinline
+        webkit-playsinline
+        preload="auto"
+        controls>
+        <source src="invitacion.mp4" type="video/mp4">
+        Tu navegador no soporta video.
+    </video>
+</div>
+
+<script>
+
+const bienvenida = document.getElementById("bienvenida");
+const transicion = document.getElementById("transicion");
+const invitacion = document.getElementById("invitacion");
+
+const videoTransicion = document.getElementById("videoTransicion");
+const videoInvitacion = document.getElementById("videoInvitacion");
+
+let iniciado = false;
+
+function iniciarInvitacion(){
+
+    if(iniciado) return;
+    iniciado = true;
+
+    bienvenida.style.display = "none";
+    transicion.style.display = "block";
+
+    videoTransicion.currentTime = 0;
+
+    videoTransicion.play()
+    .then(() => {
+        console.log("Video de transición iniciado");
+    })
+    .catch(error => {
+        console.error("Error reproduciendo transición:", error);
+    });
+}
+
+/* Compatible con PC */
+bienvenida.addEventListener("click", iniciarInvitacion);
+
+/* Compatible con móviles */
+bienvenida.addEventListener("touchstart", iniciarInvitacion, { passive: true });
+
+/* Al terminar la transición */
+videoTransicion.addEventListener("ended", () => {
+
+    transicion.style.display = "none";
+    invitacion.style.display = "block";
+
+    videoInvitacion.currentTime = 0;
+
+    videoInvitacion.play()
+    .then(() => {
+        console.log("Video principal iniciado");
+    })
+    .catch(error => {
+        console.error("Error reproduciendo invitación:", error);
+    });
+
+});
+
+</script>
+
+</body>
+</html>
